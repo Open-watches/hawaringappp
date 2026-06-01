@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Handwriting Recognition</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_write">Write</string>
+    <string name="nav_train">Train</string>
+    <string name="nav_samples">Samples</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Writing Screen -->
+    <string name="write_title">Write</string>
+    <string name="write_top_prediction">Top Prediction</string>
+    <string name="write_alternatives">Alternatives</string>
+    <string name="write_save_sample">Save Sample</string>
+    <string name="write_undo">Undo</string>
+    <string name="write_redo">Redo</string>
+    <string name="write_clear">Clear</string>
+    <string name="write_recognize">Recognize</string>
+    
+    <!-- Training Screen -->
+    <string name="train_title">Train</string>
+    <string name="train_prompt">Enter the character or word you wrote:</string>
+    <string name="train_label_hint">Label</string>
+    <string name="train_save">Save Training Data</string>
+    <string name="train_history">Training History</string>
+    
+    <!-- Samples Screen -->
+    <string name="samples_title">Samples</string>
+    <string name="samples_empty">No samples yet. Start writing or training!</string>
+    <string name="samples_delete">Delete</string>
+    <string name="samples_export">Export</string>
+    <string name="samples_import">Import</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_auto_recognize">Auto Recognition</string>
+    <string name="settings_debounce_ms">Recognition Delay (ms)</string>
+    <string name="settings_stroke_width">Stroke Width</string>
+    <string name="settings_export_data">Export Data</string>
+    <string name="settings_import_data">Import Data</string>
+    <string name="settings_clear_all">Clear All Data</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="error_generic">An error occurred. Please try again.</string>
+    <string name="success_saved">Successfully saved!</string>
+    <string name="confirm_delete">Are you sure you want to delete this?</string>
+</resources>
