@@ -102,6 +102,10 @@ class WriteFragment : Fragment() {
             }
         }
 
+        binding.btnBackground.setOnClickListener {
+            binding.canvas.cycleBackground()
+        }
+
         binding.btnSave.setOnClickListener {
             saveCurrentSample()
         }

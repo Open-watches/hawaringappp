@@ -6,6 +6,16 @@ import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 /**
+ * Page background types for the canvas.
+ * Rendered programmatically using vector lines to save memory.
+ */
+enum class PageBackground {
+    BLANK,      // No background lines
+    RULED,      // Horizontal lines (like notebook paper)
+    GRAPH       // Grid pattern (horizontal + vertical lines)
+}
+
+/**
  * Represents a single point within a stroke.
  * Captures spatial coordinates, pressure, and temporal data.
  */
@@ -101,3 +111,20 @@ enum class CandidateSource {
     BASE_MODEL,
     USER_TRAINED
 }
+
+/**
+ * Represents a page containing handwriting strokes with a specific background type.
+ * This is the primary unit for organizing handwritten content.
+ */
+@Parcelize
+@Entity(tableName = "pages")
+data class Page(
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0L,
+    val backgroundType: PageBackground = PageBackground.BLANK,
+    val width: Float = 0f,      // Page width in pixels (0 = full canvas width)
+    val height: Float = 0f,     // Page height in pixels (0 = full canvas height)
+    val strokes: List<Stroke> = emptyList(),
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
+) : Parcelable
