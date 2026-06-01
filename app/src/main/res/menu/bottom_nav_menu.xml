@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/writeFragment"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/nav_write" />
+
+    <item
+        android:id="@+id/trainFragment"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:title="@string/nav_train" />
+
+    <item
+        android:id="@+id/samplesFragment"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="@string/nav_samples" />
+
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/nav_settings" />
+
+</menu>

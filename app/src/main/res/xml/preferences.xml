@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Recognition Settings">
+
+        <SwitchPreferenceCompat
+            android:key="auto_recognize"
+            android:title="@string/settings_auto_recognize"
+            android:summary="Automatically recognize handwriting after pause"
+            android:defaultValue="true" />
+
+        <SeekBarPreference
+            android:key="debounce_ms"
+            android:title="@string/settings_debounce_ms"
+            android:summary="Delay before auto-recognition (milliseconds)"
+            android:defaultValue="400"
+            android:max="1000"
+            app:min="100"
+            app:showSeekBarValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Drawing Settings">
+
+        <SeekBarPreference
+            android:key="stroke_width"
+            android:title="@string/settings_stroke_width"
+            android:summary="Thickness of drawing strokes"
+            android:defaultValue="8"
+            android:max="20"
+            app:min="4"
+            app:showSeekBarValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Data Management">
+
+        <Preference
+            android:key="export_data"
+            android:title="@string/settings_export_data"
+            android:summary="Export all samples to JSON file" />
+
+        <Preference
+            android:key="import_data"
+            android:title="@string/settings_import_data"
+            android:summary="Import samples from JSON file" />
+
+        <Preference
+            android:key="clear_all_data"
+            android:title="@string/settings_clear_all"
+            android:summary="Delete all saved handwriting samples" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="About">
+
+        <Preference
+            android:key="version"
+            android:title="Version"
+            android:summary="1.0.0"
+            android:enabled="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

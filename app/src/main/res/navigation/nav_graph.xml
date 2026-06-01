@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/writeFragment">
+
+    <fragment
+        android:id="@+id/writeFragment"
+        android:name="com.handwriting.app.ui.write.WriteFragment"
+        android:label="@string/nav_write">
+    </fragment>
+
+    <fragment
+        android:id="@+id/trainFragment"
+        android:name="com.handwriting.app.ui.train.TrainFragment"
+        android:label="@string/nav_train">
+    </fragment>
+
+    <fragment
+        android:id="@+id/samplesFragment"
+        android:name="com.handwriting.app.ui.samples.SamplesFragment"
+        android:label="@string/nav_samples">
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.handwriting.app.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings">
+    </fragment>
+
+</navigation>
