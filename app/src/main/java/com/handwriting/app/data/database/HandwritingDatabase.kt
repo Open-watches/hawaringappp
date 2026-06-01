@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.handwriting.app.data.dao.HandwritingDao
 import com.handwriting.app.data.model.HandwritingSample
 
@@ -14,8 +15,9 @@ import com.handwriting.app.data.model.HandwritingSample
 @Database(
     entities = [HandwritingSample::class],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class HandwritingDatabase : RoomDatabase() {
 
     abstract fun handwritingDao(): HandwritingDao
