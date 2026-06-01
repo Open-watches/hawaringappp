@@ -1,3 +1,21 @@
 ```
+# Android build artifacts
+*.apk
+*.aar
+*.dex
+*.so
+
+# Android dependency directories
+build/
 .gradle/
+local.properties
+
+# Android studio files
+.idea/
+*.iml
+*.iws
+
+# Android temporary files
+*.tmp
+*.log
 ```
