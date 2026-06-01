@@ -16,6 +16,7 @@ import com.handwriting.app.databinding.FragmentWriteBinding
 import com.handwriting.app.domain.pipeline.extraction.FeatureExtractor
 import com.handwriting.app.domain.pipeline.recognition.RecognitionEngine
 import com.handwriting.app.util.StrokeSimplifier
+import com.google.android.material.chip.Chip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -162,7 +163,7 @@ class WriteFragment : Fragment() {
         
         // Create alternative candidate chips
         candidates.drop(1).forEach { candidate ->
-            val chip = android.widget.MaterialChip(requireContext()).apply {
+            val chip = Chip(requireContext()).apply {
                 text = candidate.character
                 isClickable = true
                 setOnClickListener {
