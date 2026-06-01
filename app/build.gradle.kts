@@ -71,6 +71,13 @@ dependencies {
     // JSON Serialization
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // Jetpack Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+
+    // AndroidX Preference Library
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.8.0")
