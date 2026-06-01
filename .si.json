@@ -1,0 +1,18 @@
+{
+  "plugin": "org.smartide.plugin.python",
+  "run": "echo 'change command from .si.json file'",
+  "intelligence": {
+    ".kt": {
+      "enabled": true,
+      "run": "kotlin-language-server"
+    },
+    ".py": {
+      "enabled": false,
+      "run": "pylsp"
+    },
+    ".yml": {
+      "enabled": false,
+      "run": "yaml-language-server --stdio"
+    }
+  }
+}
