@@ -49,6 +49,9 @@ class WriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize ViewModel
+        viewModel = ViewModelProvider(this)[WriteViewModel::class.java]
+
         // Initialize recognition engine
         recognitionEngine = RecognitionEngine(viewModel.repository)
         lifecycleScope.launch {
