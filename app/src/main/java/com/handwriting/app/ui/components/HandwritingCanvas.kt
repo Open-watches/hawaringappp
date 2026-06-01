@@ -5,6 +5,7 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.handwriting.app.data.model.PageBackground
 import com.handwriting.app.data.model.Stroke
 import com.handwriting.app.data.model.StrokePoint
 import java.util.*
@@ -28,6 +29,33 @@ class HandwritingCanvas @JvmOverloads constructor(
     
     // Undo stack for redo functionality
     private val undoStack = mutableListOf<List<Stroke>>()
+
+    // Page background type
+    var backgroundType: PageBackground = PageBackground.BLANK
+        set(value) {
+            field = value
+            invalidate() // Redraw when background changes
+        }
+
+    // Background paint configuration
+    private val backgroundPaint = Paint().apply {
+        color = Color.parseColor("#D3E5EF") // Light blue-gray for ruled lines
+        style = Paint.Style.STROKE
+        strokeWidth = 2f
+        isAntiAlias = true
+    }
+
+    // Grid paint for graph background
+    private val gridPaint = Paint().apply {
+        color = Color.parseColor("#E0E0E0") // Light gray for grid lines
+        style = Paint.Style.STROKE
+        strokeWidth = 1f
+        isAntiAlias = true
+    }
+
+    // Line spacing in pixels (will be converted from dp)
+    private var ruledLineSpacingPx = 24f
+    private var gridSpacingPx = 16f
 
     // Paint configuration
     private val strokePaint = Paint().apply {
@@ -82,8 +110,26 @@ class HandwritingCanvas @JvmOverloads constructor(
         invalidate()
     }
 
+    /**
+     * Initialize line spacing based on screen density.
+     * Call this after view is attached to get proper density.
+     */
+    fun initializeSpacing() {
+        val density = context.resources.displayMetrics.density
+        ruledLineSpacingPx = 24f * density  // 24dp
+        gridSpacingPx = 16f * density       // 16dp
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        initializeSpacing()
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        // Draw background first (before strokes)
+        drawBackground(canvas)
 
         // Draw all completed strokes
         for (stroke in completedStrokes) {
@@ -93,6 +139,59 @@ class HandwritingCanvas @JvmOverloads constructor(
         // Draw current stroke being drawn
         if (currentPoints.isNotEmpty()) {
             drawCurrentStroke(canvas)
+        }
+    }
+
+    /**
+     * Draw the page background based on the background type.
+     * Uses vector lines drawn programmatically to save memory.
+     */
+    private fun drawBackground(canvas: Canvas) {
+        when (backgroundType) {
+            PageBackground.BLANK -> {
+                // No background lines to draw
+            }
+            PageBackground.RULED -> {
+                drawRuledBackground(canvas)
+            }
+            PageBackground.GRAPH -> {
+                drawGraphBackground(canvas)
+            }
+        }
+    }
+
+    /**
+     * Draw ruled paper background with horizontal lines.
+     */
+    private fun drawRuledBackground(canvas: Canvas) {
+        val width = width.toFloat()
+        var y = ruledLineSpacingPx
+        
+        while (y < height) {
+            canvas.drawLine(0f, y, width, y, backgroundPaint)
+            y += ruledLineSpacingPx
+        }
+    }
+
+    /**
+     * Draw graph paper background with intersecting horizontal and vertical lines.
+     */
+    private fun drawGraphBackground(canvas: Canvas) {
+        val width = width.toFloat()
+        val height = height.toFloat()
+        
+        // Draw horizontal lines
+        var y = gridSpacingPx
+        while (y < height) {
+            canvas.drawLine(0f, y, width, y, gridPaint)
+            y += gridSpacingPx
+        }
+        
+        // Draw vertical lines
+        var x = gridSpacingPx
+        while (x < width) {
+            canvas.drawLine(x, 0f, x, height, gridPaint)
+            x += gridSpacingPx
         }
     }
 
@@ -310,11 +409,26 @@ class HandwritingCanvas @JvmOverloads constructor(
         val canvas = Canvas(bitmap)
         canvas.drawColor(Color.WHITE)
         
+        // Draw background on exported bitmap too
+        drawBackground(canvas)
+        
         for (stroke in completedStrokes) {
             drawStroke(canvas, stroke)
         }
         
         return bitmap
+    }
+
+    /**
+     * Cycle to the next background type.
+     * Useful for testing and UI toggling.
+     */
+    fun cycleBackground() {
+        backgroundType = when (backgroundType) {
+            PageBackground.BLANK -> PageBackground.RULED
+            PageBackground.RULED -> PageBackground.GRAPH
+            PageBackground.GRAPH -> PageBackground.BLANK
+        }
     }
 
     companion object {
