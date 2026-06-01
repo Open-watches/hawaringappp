@@ -19,20 +19,21 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # The Bootstrap Engine: Patched to isolate the initialization sequence from global Gradle versions
+    # Upgraded Step: Forces the cloud environment to download, cache, and use Gradle 8.5 globally
+    - name: Setup Global Gradle Environment
+      uses: gradle/actions/setup-gradle@v6
+      with:
+        gradle-version: '8.5'
+
+    # The Bootstrap Engine: Now safely executes using 8.5, bypassing any 9.5.1 deprecation crashes
     - name: Bootstrap Gradle Wrapper
       run: |
         if [ ! -f gradlew ]; then
-          echo "⚠️ No local gradle wrapper detected. Bootstrapping workspace in isolation..."
-          touch dummy.gradle
-          gradle wrapper --gradle-version 8.5 --distribution-type bin -b dummy.gradle -c dummy.gradle
-          rm dummy.gradle
+          echo "⚠️ No local gradle wrapper detected. Bootstrapping workspace..."
+          gradle wrapper --gradle-version 8.5 --distribution-type bin
         else
           echo "✅ Existing gradle wrapper detected."
         fi
-
-    - name: Setup Gradle Cache
-      uses: gradle/actions/setup-gradle@v6
 
     - name: Grant Execute Permissions to Gradle
       run: chmod +x gradlew
