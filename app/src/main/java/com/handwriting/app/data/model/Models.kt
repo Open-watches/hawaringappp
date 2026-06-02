@@ -116,9 +116,7 @@ enum class CandidateSource {
  * This is the primary unit for organizing handwritten content.
  */
 @Parcelize
-@Entity(tableName = "pages")
 data class Page(
-    @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val backgroundType: PageBackground = PageBackground.BLANK,
     val width: Float = 0f,      // Page width in pixels (0 = full canvas width)
