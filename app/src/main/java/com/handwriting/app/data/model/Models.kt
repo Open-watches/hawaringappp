@@ -33,7 +33,6 @@ data class StrokePoint(
  */
 @Parcelize
 data class Stroke(
-    @PrimaryKey(autoGenerate = true)
     val strokeId: Long = 0L,
     val points: List<StrokePoint>,
     val characterLabel: String? = null  // Used in training mode

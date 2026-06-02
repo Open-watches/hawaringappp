@@ -1,1 +1,1 @@
-Nothing should be ignored since the changes only include Kotlin source files (.kt) which are source code files.
+Nothing needs to be added to the .gitignore file based on the provided changes. The modified file 'app/src/main/java/com/handwriting/app/data/model/Models.kt' is a source code file and should not be ignored.
