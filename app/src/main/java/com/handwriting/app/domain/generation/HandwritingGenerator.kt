@@ -326,7 +326,7 @@ class HandwritingGenerator {
             'ù', 'ú', 'û', 'ü' -> 'u'
             'ñ' -> 'n'
             'ç' -> 'c'
-            'ß' -> 'b'
+            'ß' -> 's'
             else -> null
         }
     }
