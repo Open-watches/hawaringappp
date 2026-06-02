@@ -1,51 +1,146 @@
 ```
-# Dependencies
+# Gradle
 .gradle/
-node_modules/
-
-# Build artifacts
 build/
-dist/
-target/
+!gradle-wrapper.jar
 
 # Logs
 *.log
+
+# IDE
+.idea/
+*.swp
+*.swo
 
 # Environment
 .env
 .env.local
 *.env.*
 
-# Editors
-.vscode/
-.idea/
+# Dependencies
+node_modules/
+**/node_modules/
 
 # Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+.env/
+.envs/
+.ENV/
+.env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git/
+.mypy_cache/
+.pytest_cache/
+.hypothesis/
+.eggs/
+eggs/
+parts/
+.sconf_temp/
+.scrapy
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+*.pot
 *.pyc
 *.pyo
 *.pyd
-.Python
-venv/
-.venv/
-.env
+.MF
+classes/
+lib/
+logs/
+.project
+.pydevproject
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
 
-# Java
+# Compiled and binary files
+*.o
+*.obj
+*.out
+*.exe
+*.dll
+*.so
+*.a
 *.class
 *.jar
 *.war
 *.ear
-*.nar
-*.hprof
+*.tar.gz
+*.tgz
+*.zip
+*.rar
+*.7z
+*.gz
+*.bz2
+*.xz
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Distribution / packaging
+dist/
+*/dist/
+target/
+*/target/
+*.egg-info/
+*.egg
+*.whl
+*.tar
+*.dmg
+*.msi
+*.rpm
+*.deb
 
 # Temporary files
 *.tmp
 *.temp
 *.bak
-*.swp
-*.swo
-
-# OS generated files
+*.backup
+*~
 .DS_Store
 Thumbs.db
+
+# Julia
+julia-*/
+.julia/
+
+# Zig
+zig*/
 ```
