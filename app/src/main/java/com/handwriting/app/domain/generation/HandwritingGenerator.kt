@@ -9,6 +9,7 @@ import com.handwriting.app.domain.generation.style.PointData
 import com.handwriting.app.domain.generation.style.BoundingBoxData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 /**
  * Generic handwriting synthesis engine.
@@ -221,12 +222,12 @@ class HandwritingGenerator {
         }
         
         val totalWeight = weights.sum()
-        val random = kotlin.math.random() * totalWeight
+        val randomValue = Random.nextFloat() * totalWeight
         
         var cumulative = 0f
         for ((i, weight) in weights.withIndex()) {
             cumulative += weight
-            if (random <= cumulative) {
+            if (randomValue <= cumulative) {
                 return templates[i]
             }
         }
@@ -242,7 +243,7 @@ class HandwritingGenerator {
             (template.boundingBox.height.coerceAtLeast(1f))
         
         // Apply natural size variation
-        val variation = (kotlin.math.random() - 0.5f) * 2f * currentStyle.sizeVariationFactor
+        val variation = (Random.nextFloat() - 0.5f) * 2f * currentStyle.sizeVariationFactor
         return baseScale * (1f + variation)
     }
 
@@ -250,14 +251,14 @@ class HandwritingGenerator {
      * Calculate slight rotation variation for natural look.
      */
     private fun calculateRotationVariation(): Float {
-        return (kotlin.math.random() - 0.5f) * 2f * currentStyle.rotationVariation
+        return (Random.nextFloat() - 0.5f) * 2f * currentStyle.rotationVariation
     }
 
     /**
      * Calculate baseline position variation.
      */
     private fun calculateBaselineVariation(): Float {
-        return (kotlin.math.random() - 0.5f) * 2f * currentStyle.baselineVariation
+        return (Random.nextFloat() - 0.5f) * 2f * currentStyle.baselineVariation
     }
 
     /**
@@ -307,7 +308,7 @@ class HandwritingGenerator {
         }
 
         return Stroke(
-            strokeId = System.currentTimeMillis() + kotlin.math.random().toLong(),
+            strokeId = System.currentTimeMillis() + Random.nextLong(),
             points = transformedPoints,
             characterLabel = stroke.characterLabel
         )
@@ -318,7 +319,7 @@ class HandwritingGenerator {
      */
     private fun findFallbackCharacter(char: Char): Char? {
         // Simple mappings for common substitutions
-        return when (char.lowercase()) {
+        return when (char.lowercaseChar()) {
             'à', 'á', 'â', 'ä', 'ã', 'å' -> 'a'
             'è', 'é', 'ê', 'ë' -> 'e'
             'ì', 'í', 'î', 'ï' -> 'i'

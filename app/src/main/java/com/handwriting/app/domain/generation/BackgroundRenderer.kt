@@ -112,15 +112,21 @@ class BackgroundRenderer {
         val translate = (1.0f - scale) * 128f
         
         colorMatrix.setScale(scale, scale, scale, 1.0f)
-        colorMatrix.postTranslate(translate, translate, translate, 0f)
         
-        // Apply brightness offset
-        colorMatrix.postTranslate(
-            brightnessOffset * contrast,
-            brightnessOffset * contrast,
-            brightnessOffset * contrast,
-            0f
-        )
+        // Apply translation and brightness offset together
+        val totalTranslateR = translate + brightnessOffset * contrast
+        val totalTranslateG = translate + brightnessOffset * contrast
+        val totalTranslateB = translate + brightnessOffset * contrast
+        
+        val tempMatrix = ColorMatrix().apply {
+            set(floatArrayOf(
+                scale, 0f, 0f, 0f, totalTranslateR,
+                0f, scale, 0f, 0f, totalTranslateG,
+                0f, 0f, scale, 0f, totalTranslateB,
+                0f, 0f, 0f, 1f, 0f
+            ))
+        }
+        colorMatrix.set(tempMatrix)
     }
 
     /**
@@ -156,34 +162,34 @@ class BackgroundRenderer {
                     // Canvas is wider, letterbox horizontally
                     val newWidth = canvasHeight * bgAspect
                     val horizontalOffset = (canvasWidth - newWidth) / 2
-                    horizontalOffset to 0f to (horizontalOffset + newWidth) to canvasHeight.toFloat()
+                    Triple(Triple(horizontalOffset, 0f), horizontalOffset + newWidth) to canvasHeight.toFloat()
                 } else {
                     // Canvas is taller, letterbox vertically
                     val newHeight = canvasWidth / bgAspect
                     val verticalOffset = (canvasHeight - newHeight) / 2
-                    0f to verticalOffset to canvasWidth.toFloat() to (verticalOffset + newHeight)
+                    Triple(Triple(0f, verticalOffset), canvasWidth.toFloat()) to (verticalOffset + newHeight)
                 }
             }
             ScaleType.FILL -> {
                 // Stretch to fill (may distort)
-                0f to 0f to canvasWidth.toFloat() to canvasHeight.toFloat()
+                Triple(Triple(0f, 0f), canvasWidth.toFloat()) to canvasHeight.toFloat()
             }
             ScaleType.CROP -> {
                 if (canvasAspect > bgAspect) {
                     // Crop vertically
                     val newHeight = canvasWidth / bgAspect
                     val verticalOffset = (newHeight - canvasHeight) / 2
-                    0f to -verticalOffset to canvasWidth.toFloat() to (canvasHeight - verticalOffset)
+                    Triple(Triple(0f, -verticalOffset), canvasWidth.toFloat()) to (canvasHeight - verticalOffset)
                 } else {
                     // Crop horizontally
                     val newWidth = canvasHeight * bgAspect
                     val horizontalOffset = (newWidth - canvasWidth) / 2
-                    -horizontalOffset to 0f to (canvasWidth - horizontalOffset) to canvasHeight.toFloat()
+                    Triple(Triple(-horizontalOffset, 0f), (canvasWidth - horizontalOffset)) to canvasHeight.toFloat()
                 }
             }
         }
         
-        backgroundRect = RectF(left, top, right, bottom)
+        backgroundRect = RectF(left.first.first.first, left.first.first.second, left.first.second, left.second)
     }
 
     /**
@@ -235,7 +241,15 @@ class BackgroundRenderer {
         
         // Apply color matrix filter if adjusted
         val paint = Paint()
-        if (!colorMatrix.isIdentity) {
+        val isIdentityMatrix = colorMatrix.values.contentEquals(
+            floatArrayOf(
+                1f, 0f, 0f, 0f, 0f,
+                0f, 1f, 0f, 0f, 0f,
+                0f, 0f, 1f, 0f, 0f,
+                0f, 0f, 0f, 1f, 0f
+            )
+        )
+        if (!isIdentityMatrix) {
             paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
         }
         paint.isFilterBitmap = true
