@@ -241,7 +241,9 @@ class BackgroundRenderer {
         
         // Apply color matrix filter if adjusted
         val paint = Paint()
-        val isIdentityMatrix = colorMatrix.values.contentEquals(
+        val matrixArray = FloatArray(20)
+        colorMatrix.getValues(matrixArray)
+        val isIdentityMatrix = matrixArray.contentEquals(
             floatArrayOf(
                 1f, 0f, 0f, 0f, 0f,
                 0f, 1f, 0f, 0f, 0f,
