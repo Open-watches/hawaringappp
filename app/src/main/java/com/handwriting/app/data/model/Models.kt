@@ -42,7 +42,6 @@ data class Stroke(
  * Complete handwriting sample containing multiple strokes.
  * This is the primary unit for recognition and storage.
  */
-@Parcelize
 @Entity(tableName = "handwriting_samples")
 data class HandwritingSample(
     @PrimaryKey(autoGenerate = true)
@@ -52,7 +51,7 @@ data class HandwritingSample(
     val createdAt: Long = System.currentTimeMillis(),
     val isUserTrained: Boolean = false,   // True if added via training mode
     val category: String = "default"      // For grouping (e.g., "letters", "numbers", "custom")
-) : Parcelable
+)
 
 /**
  * Normalized stroke data after preprocessing.
