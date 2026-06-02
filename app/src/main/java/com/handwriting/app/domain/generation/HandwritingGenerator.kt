@@ -197,9 +197,9 @@ class HandwritingGenerator {
         val rotation = calculateRotationVariation()
         val baselineOffset = calculateBaselineVariation()
 
-        return template.strokes.map { stroke ->
-            transformStroke(
-                stroke = stroke,
+        return template.strokes.map { strokeData ->
+            transformStrokeFromData(
+                strokeData = strokeData,
                 offsetX = startX,
                 offsetY = baselineY + baselineOffset,
                 scale = scale,
@@ -272,6 +272,46 @@ class HandwritingGenerator {
         } else {
             currentStyle.averageCharacterHeight * 0.6f // Default proportional width
         }
+    }
+
+    /**
+     * Transform a stroke from StrokeData with offset, scale, and rotation.
+     */
+    private fun transformStrokeFromData(
+        strokeData: StrokeData,
+        offsetX: Float,
+        offsetY: Float,
+        scale: Float,
+        rotation: Float
+    ): Stroke {
+        val cosR = kotlin.math.cos(rotation.toDouble()).toFloat()
+        val sinR = kotlin.math.sin(rotation.toDouble()).toFloat()
+
+        val transformedPoints = strokeData.points.map { point ->
+            // Apply scale
+            var x = point.x * scale
+            var y = point.y * scale
+
+            // Apply rotation around origin
+            val rotatedX = x * cosR - y * sinR
+            val rotatedY = x * sinR + y * cosR
+            x = rotatedX
+            y = rotatedY
+
+            // Apply offset (flip Y for canvas coordinates)
+            StrokePoint(
+                x = x + offsetX,
+                y = -y + offsetY, // Flip Y because canvas Y increases downward
+                pressure = point.pressure * currentStyle.pressureVariationFactor,
+                timestamp = System.currentTimeMillis()
+            )
+        }
+
+        return Stroke(
+            strokeId = System.currentTimeMillis() + Random.nextLong(),
+            points = transformedPoints,
+            characterLabel = null
+        )
     }
 
     /**

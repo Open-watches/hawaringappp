@@ -156,40 +156,40 @@ class BackgroundRenderer {
         val bgAspect = bg.width.toFloat() / bg.height.toFloat()
         val canvasAspect = canvasWidth.toFloat() / canvasHeight.toFloat()
         
-        val (left, top, right, bottom) = when (scaleType) {
+        val rectData = when (scaleType) {
             ScaleType.FIT -> {
                 if (canvasAspect > bgAspect) {
                     // Canvas is wider, letterbox horizontally
                     val newWidth = canvasHeight * bgAspect
                     val horizontalOffset = (canvasWidth - newWidth) / 2
-                    Triple(Triple(horizontalOffset, 0f), horizontalOffset + newWidth) to canvasHeight.toFloat()
+                    RectF(horizontalOffset, 0f, horizontalOffset + newWidth, canvasHeight.toFloat())
                 } else {
                     // Canvas is taller, letterbox vertically
                     val newHeight = canvasWidth / bgAspect
                     val verticalOffset = (canvasHeight - newHeight) / 2
-                    Triple(Triple(0f, verticalOffset), canvasWidth.toFloat()) to (verticalOffset + newHeight)
+                    RectF(0f, verticalOffset, canvasWidth.toFloat(), verticalOffset + newHeight)
                 }
             }
             ScaleType.FILL -> {
                 // Stretch to fill (may distort)
-                Triple(Triple(0f, 0f), canvasWidth.toFloat()) to canvasHeight.toFloat()
+                RectF(0f, 0f, canvasWidth.toFloat(), canvasHeight.toFloat())
             }
             ScaleType.CROP -> {
                 if (canvasAspect > bgAspect) {
                     // Crop vertically
                     val newHeight = canvasWidth / bgAspect
                     val verticalOffset = (newHeight - canvasHeight) / 2
-                    Triple(Triple(0f, -verticalOffset), canvasWidth.toFloat()) to (canvasHeight - verticalOffset)
+                    RectF(0f, -verticalOffset, canvasWidth.toFloat(), canvasHeight - verticalOffset)
                 } else {
                     // Crop horizontally
                     val newWidth = canvasHeight * bgAspect
                     val horizontalOffset = (newWidth - canvasWidth) / 2
-                    Triple(Triple(-horizontalOffset, 0f), (canvasWidth - horizontalOffset)) to canvasHeight.toFloat()
+                    RectF(-horizontalOffset, 0f, canvasWidth - horizontalOffset, canvasHeight.toFloat())
                 }
             }
         }
         
-        backgroundRect = RectF(left.first.first.first, left.first.first.second, left.first.second, left.second)
+        backgroundRect = rectData
     }
 
     /**
