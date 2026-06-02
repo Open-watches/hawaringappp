@@ -2,6 +2,7 @@ package com.handwriting.app.domain.generation.style
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import com.handwriting.app.domain.generation.Alignment
 
 /**
  * Represents the learned handwriting style from user samples.

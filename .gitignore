@@ -1,12 +1,82 @@
 ```
-# Build artifacts
+# Compiled and build artifacts
+*.class
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.out
 build/
+target/
+
 # Dependencies
 .gradle/
+**/libs/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
 # Environment
 .env
 .env.local
-.env.*
-# Logs
-*.log
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage*
+.nox/
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
+
+# Java specific
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# Android specific
+*.apk
+*.aab
+local.properties
+captures/
+.externalNativeBuild
+.gradle
+.idea/
+*.keystore
+*.jks
+
+# Kotlin specific
+*.kotlin_metadata
+*.kotlin_built
 ```

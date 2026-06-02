@@ -226,8 +226,8 @@ class StyleAnalyzer {
 
             // Vertical strokes give best slant indication
             if (kotlin.math.abs(dy) > kotlin.math.abs(dx) && dy != 0f) {
-                val angle = kotlin.math.atan2(dx.toDouble(), kotlin.math.abs(dy)).toFloat()
-                totalAngle += angle
+                val angle = kotlin.math.atan2(dx.toDouble(), kotlin.math.abs(dy).toDouble())
+                totalAngle += angle.toFloat()
                 count++
             }
         }
