@@ -9,37 +9,63 @@
 *.a
 *.pyc
 __pycache__/
+*.pyo
+*.pyd
+*.jar
+*.war
+*.zip
+*.tar
+*.gz
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
 
 # Dependencies
 node_modules/
 venv/
 .venv/
+.env
+.env.local
+.env.*
+target/
 .gradle/
 .mypy_cache/
 .pytest_cache/
-target/
-dist/
-build/
+coverage/
+htmlcov/
+.coverage
 
-# Editors
+# Build directories
+build/
+dist/
+out/
+
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *.tmp
 
-# Logs
-*.log
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
-
-# System
+# System files
 .DS_Store
 Thumbs.db
-.env
-.env.local
-*.env.*
+*.log
+
+# Android specific
+*.apk
+*.aar
+local.properties
 ```

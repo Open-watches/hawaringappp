@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.handwriting.app.data.model.HandwritingSample
+import com.handwriting.app.data.model.PageBackground
 import com.handwriting.app.databinding.FragmentTrainBinding
 import com.handwriting.app.util.StrokeSimplifier
 import kotlinx.coroutines.launch
 
 /**
  * Training screen fragment - allows users to label and save handwriting samples.
+ * Integrated with progressive training workflow.
  */
 class TrainFragment : Fragment() {
 
@@ -47,6 +49,7 @@ class TrainFragment : Fragment() {
     private fun setupCanvas() {
         binding.canvas.apply {
             setAutoRecognition(false) // Manual control in training mode
+            setBackgroundType(PageBackground.RULED) // Show ruled lines for guidance
             
             onStrokesChanged = { strokes ->
                 updateSaveButtonState()
@@ -68,6 +71,11 @@ class TrainFragment : Fragment() {
 
         binding.btnSave.setOnClickListener {
             saveTrainingSample()
+        }
+        
+        binding.btnSkip.setOnClickListener {
+            viewModel.skipCharacter()
+            Toast.makeText(context, "Skipped to next character", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -132,6 +140,22 @@ class TrainFragment : Fragment() {
 
         viewModel.isSaving.observe(viewLifecycleOwner) { isSaving ->
             binding.btnSave.isEnabled = !isSaving
+        }
+        
+        viewModel.currentPrompt.observe(viewLifecycleOwner) { prompt ->
+            binding.trainingPrompt.text = prompt
+            // Auto-fill label for single character prompts
+            if (prompt.contains(": ")) {
+                val character = prompt.substringAfter(": ").trim()
+                if (character.length == 1) {
+                    binding.labelInput.setText(character)
+                }
+            }
+        }
+        
+        viewModel.trainingProgress.observe(viewLifecycleOwner) { progress ->
+            binding.progressBar.progress = progress.toInt()
+            binding.progressText.text = "${progress.toInt()}% complete"
         }
     }
 

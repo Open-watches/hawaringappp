@@ -33,11 +33,49 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!-- Training Progress Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/surface">
+
+            <TextView
+                android:id="@+id/trainingPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Write the character: A"
+                android:textColor="@color/on_surface"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/Widget.Material3.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:max="100"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/progressText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0% complete"
+                android:textColor="@color/on_surface_variant"
+                android:textSize="12sp"
+                android:gravity="center" />
+
+        </LinearLayout>
+
         <!-- Canvas Area -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.6"
+            android:layout_weight="0.5"
             android:background="@android:color/white"
             android:elevation="2dp">
 
@@ -110,6 +148,15 @@
                         android:src="@android:drawable/ic_menu_delete"
                         android:tint="@color/on_surface" />
 
+                    <ImageButton
+                        android:id="@+id/btnSkip"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Skip"
+                        android:src="@android:drawable/ic_media_next"
+                        android:tint="@color/on_surface" />
+
                     <Button
                         android:id="@+id/btnSave"
                         android:layout_width="0dp"
@@ -139,7 +186,7 @@
             android:id="@+id/historyRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_weight="0.3"
             android:padding="8dp"
             android:clipToPadding="false" />
 
