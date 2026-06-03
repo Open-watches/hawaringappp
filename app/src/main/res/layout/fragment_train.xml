@@ -51,14 +51,17 @@
                 android:textStyle="bold"
                 android:gravity="center" />
 
-            <ProgressBar
+            <!-- Replaced platform style reference with Material LinearProgressIndicator -->
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progressBar"
-                style="@style/Widget.Material3.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:max="100"
-                android:progress="0" />
+                app:progress="0"
+                android:indeterminate="false"
+                app:trackThickness="6dp"
+                app:indicatorColor="@color/primary" />
 
             <TextView
                 android:id="@+id/progressText"
