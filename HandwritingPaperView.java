@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -30,13 +29,10 @@ import java.util.Random;
 public class HandwritingPaperView extends View {
 
     // ========================================================================
-    // COMPONENT 1: Core Paper Logic (AGSL Shader)
+    // AGSL PAPER SHADER CODE
     // ========================================================================
 
-    /**
-     * AGSL shader string for procedural paper generation.
-     * Generates micro-pulp texturing, notebook rule grid lines, and margin indicator.
-     */
+    // Paper shader AGSL code
     private static final String PAPER_SHADER_CODE = """
         uniform float2 resolution;
         uniform float lineSpacing;
@@ -101,39 +97,69 @@ public class HandwritingPaperView extends View {
         }
         """;
 
-    // Shader uniforms
+    // ========================================================================
+    // MEMBER VARIABLES
+    // ========================================================================
+
+    // Shader components
     private RuntimeShader mPaperShader;
     private RenderEffect mPaperRenderEffect;
     
-    // Paper configuration
-    private float mLineSpacing = 80.0f; // pixels between lines
-    private float mMarginWidth = 0.1f; // 10% of screen width
-    private int mLineColor = Color.argb(255, 180, 200, 255); // Light blue
-    private int mMarginColor = Color.argb(255, 255, 150, 150); // Light red
-    private int mPaperBaseColor = Color.argb(255, 250, 248, 240); // Off-white paper
+    // Paper configuration defaults
+    private static final float DEFAULT_LINE_SPACING = 80.0f;
+    private static final float DEFAULT_MARGIN_WIDTH = 0.1f;
+    private static final int DEFAULT_LINE_COLOR = Color.argb(255, 180, 200, 255);
+    private static final int DEFAULT_MARGIN_COLOR = Color.argb(255, 255, 150, 150);
+    private static final int DEFAULT_PAPER_BASE_COLOR = Color.argb(255, 250, 248, 240);
+    
+    // Paper configuration (runtime)
+    private float mLineSpacing = DEFAULT_LINE_SPACING;
+    private float mMarginWidth = DEFAULT_MARGIN_WIDTH;
+    private int mLineColor = DEFAULT_LINE_COLOR;
+    private int mMarginColor = DEFAULT_MARGIN_COLOR;
+    private int mPaperBaseColor = DEFAULT_PAPER_BASE_COLOR;
 
-    // ========================================================================
-    // COMPONENT 2: Core Handwriting & Layout Logic
-    // ========================================================================
 
     // Text rendering
-    private TextPaint mTextPaint;
+    private static final float DEFAULT_TEXT_SIZE = 42.0f;
+    private static final float DEFAULT_TREMOR_AMPLITUDE = 1.5f;
+    private static final float DEFAULT_TREMOR_FREQUENCY = 0.03f;
+    private static final float DEFAULT_INK_VARIATION_FACTOR = 0.15f;
+    private static final float DEFAULT_CONTENT_TOP_PADDING = 60.0f;
+    private static final float DEFAULT_CONTENT_LEFT_PADDING = 20.0f;
+    
+    // Validation bounds for configuration methods
+    private static final float MIN_LINE_SPACING = 40.0f;
+    private static final float MIN_MARGIN_WIDTH = 0.0f;
+    private static final float MAX_MARGIN_WIDTH = 0.5f;
+    private static final float MIN_TEXT_SIZE = 12.0f;
+    private static final float MIN_TREMOR_AMPLITUDE = 0.0f;
+    private static final float MAX_TREMOR_AMPLITUDE = 10.0f;
+    private static final float MIN_INK_VARIATION_FACTOR = 0.0f;
+    private static final float MAX_INK_VARIATION_FACTOR = 1.0f;
+    
+    private final TextPaint mTextPaint;
     private String mTextContent = "";
-    private List<LineLayout> mLineLayouts;
+    private final List<LineLayout> mLineLayouts;
     
     // Handwriting simulation parameters
-    private float mTremorAmplitude = 1.5f; // Y-axis jitter amplitude
-    private float mTremorFrequency = 0.03f; // Sine wave frequency
-    private Random mRandom;
+    private float mTremorAmplitude = DEFAULT_TREMOR_AMPLITUDE;
+    private float mTremorFrequency = DEFAULT_TREMOR_FREQUENCY;
+    private final Random mRandom;
     private long mTremorSeed;
     
     // Ink pooling simulation
-    private float mInkVariationFactor = 0.15f; // Alpha variation range
+    private float mInkVariationFactor = DEFAULT_INK_VARIATION_FACTOR;
     
     // Layout state
     private boolean mNeedsRelayout = true;
-    private float mContentTopPadding = 60.0f;
-    private float mContentLeftPadding = 20.0f;
+    private final float mContentTopPadding = DEFAULT_CONTENT_TOP_PADDING;
+    private final float mContentLeftPadding = DEFAULT_CONTENT_LEFT_PADDING;
+
+
+    // ========================================================================
+    // INNER CLASSES
+    // ========================================================================
 
     /**
      * Internal class to hold layout information for each line
@@ -157,7 +183,7 @@ public class HandwritingPaperView extends View {
     }
 
     // ========================================================================
-    // Constructors and Initialization
+    // CONSTRUCTORS AND INITIALIZATION
     // ========================================================================
 
     public HandwritingPaperView(@NonNull Context context) {
@@ -183,7 +209,7 @@ public class HandwritingPaperView extends View {
         // Initialize text paint with handwriting-style properties
         mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
         mTextPaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL));
-        mTextPaint.setTextSize(42.0f);
+        mTextPaint.setTextSize(DEFAULT_TEXT_SIZE);
         mTextPaint.setColor(Color.BLACK);
         mTextPaint.setStyle(Paint.Style.FILL);
         
@@ -241,7 +267,7 @@ public class HandwritingPaperView extends View {
     }
 
     // ========================================================================
-    // Text Layout and Wrapping Logic
+    // TEXT LAYOUT AND WRAPPING
     // ========================================================================
 
     /**
@@ -389,7 +415,7 @@ public class HandwritingPaperView extends View {
     }
 
     // ========================================================================
-    // Rendering
+    // RENDERING
     // ========================================================================
 
     @Override
@@ -430,7 +456,7 @@ public class HandwritingPaperView extends View {
     }
 
     // ========================================================================
-    // EXPORT PIPELINE
+    // EXPORT METHODS
     // ========================================================================
 
     /**
@@ -551,7 +577,7 @@ public class HandwritingPaperView extends View {
     }
 
     // ========================================================================
-    // Configuration Methods
+    // PUBLIC CONFIGURATION METHODS
     // ========================================================================
 
     /**
@@ -559,7 +585,7 @@ public class HandwritingPaperView extends View {
      * @param spacing Distance in pixels
      */
     public void setLineSpacing(float spacing) {
-        mLineSpacing = Math.max(40.0f, spacing);
+        mLineSpacing = Math.max(MIN_LINE_SPACING, spacing);
         updateShaderUniforms();
         mNeedsRelayout = true;
         invalidate();
@@ -570,7 +596,7 @@ public class HandwritingPaperView extends View {
      * @param margin Fraction value (0.0 to 1.0)
      */
     public void setMarginWidth(float margin) {
-        mMarginWidth = Math.max(0.0f, Math.min(0.5f, margin));
+        mMarginWidth = Math.max(MIN_MARGIN_WIDTH, Math.min(MAX_MARGIN_WIDTH, margin));
         updateShaderUniforms();
         mNeedsRelayout = true;
         invalidate();
@@ -581,7 +607,7 @@ public class HandwritingPaperView extends View {
      * @param size Size in pixels
      */
     public void setTextSize(float size) {
-        mTextPaint.setTextSize(Math.max(12.0f, size));
+        mTextPaint.setTextSize(Math.max(MIN_TEXT_SIZE, size));
         mNeedsRelayout = true;
         invalidate();
     }
@@ -601,7 +627,7 @@ public class HandwritingPaperView extends View {
      * @param amplitude Jitter amplitude in pixels
      */
     public void setTremorAmplitude(float amplitude) {
-        mTremorAmplitude = Math.max(0.0f, Math.min(10.0f, amplitude));
+        mTremorAmplitude = Math.max(MIN_TREMOR_AMPLITUDE, Math.min(MAX_TREMOR_AMPLITUDE, amplitude));
         mNeedsRelayout = true;
         invalidate();
     }
@@ -611,7 +637,7 @@ public class HandwritingPaperView extends View {
      * @param factor Variation factor (0.0 to 1.0)
      */
     public void setInkVariationFactor(float factor) {
-        mInkVariationFactor = Math.max(0.0f, Math.min(1.0f, factor));
+        mInkVariationFactor = Math.max(MIN_INK_VARIATION_FACTOR, Math.min(MAX_INK_VARIATION_FACTOR, factor));
         mNeedsRelayout = true;
         invalidate();
     }
